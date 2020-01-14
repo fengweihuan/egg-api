@@ -53,13 +53,10 @@ class ListController extends Controller {
   // 删除(批量)
   async delete() {
     const { ctx } = this
-    const arr = ctx.params.id.split()
-    for (const id of arr) {
-      const res = await ctx.model.List.findById(id)
-      if (res) {
-        await res.remove()
-      }
-    }
+    const arr = ctx.params.id.split(',')
+    arr.map(async id => {
+      await ctx.model.List.findOneAndDelete(id)
+    })
     ctx.helper.success()
   }
 }
