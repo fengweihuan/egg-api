@@ -1,0 +1,17 @@
+{
+  "extends": "eslint-config-egg",
+  "rules": {
+    "indent": [
+      "error",
+      2
+    ],
+    "semi": "off",
+    "no-console": "off",
+    "no-self-assign": "off",
+    "no-unused-vars": "off",
+    "eol-last": "off",
+    "comma-dangle": "off",
+    "no-else-return": "off",
+    "newline-per-chained-call": "off"
+  }
+}
