@@ -29,6 +29,12 @@ module.exports = appInfo => {
     }
   };
 
+  config.multipart = {
+    whitelist: [ '.jpg', '.jpeg', '.png', '.gif', '.mov', '.mp4', '.avi', '.mp3', '.wma', '.wav', '.ogg', '.ape', '.acc',
+      '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.key', '.numbers', '.pages', '.pdf', '.txt', '.psd', '.zip', '.gz', '.tgz', '.gzip'
+    ]
+  }
+
   config.security = {
     csrf: {
       enable: false,

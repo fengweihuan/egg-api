@@ -7,11 +7,17 @@ class ListController extends Controller {
     super(ctx)
     this.createRule = {
       name: { type: 'string' },
-      description: { type: 'string', required: false }  //描述
+      type: { type: 'string' },
+      number: { type: 'number' },
+      unit: { type: 'string' },
+      desc: { type: 'string', required: false } // 描述
     }
     this.updateRule = {
       name: { type: 'string', required: false },
-      description: { type: 'string', required: false }  //描述
+      type: { type: 'string', required: false },
+      number: { type: 'number', required: false },
+      unit: { type: 'string', required: false },
+      description: { type: 'string', required: false } // 描述
     }
   }
   // 列表(带分页)
@@ -22,8 +28,8 @@ class ListController extends Controller {
     const skip = ((Number(page)) - 1) * Number(pageSize)
     const query = ctx.model.List.find({
       $or: [
-        { name: {$regex: reg} },
-        { description: {$regex: reg} }
+        { name: { $regex: reg } },
+        { description: { $regex: reg } }
       ]
     })
     const total = await query.countDocuments()
@@ -42,11 +48,11 @@ class ListController extends Controller {
     const { ctx } = this
     const requestBody = ctx.request.body
     ctx.validate(this.updateRule)
-    let res = await ctx.model.List.findById( ctx.params.id )
+    const res = await ctx.model.List.findById(ctx.params.id)
     if (!res) {
       ctx.throw(404, '找不到数据!')
     }
-    const body = ctx.helper.removeCode(requestBody, 'deleteCode')    //移除禁止更新的字段
+    const body = ctx.helper.removeCode(requestBody, 'deleteCode') // 移除禁止更新的字段
     await res.update(body).exec()
     ctx.helper.success()
   }

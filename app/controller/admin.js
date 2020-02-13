@@ -40,7 +40,7 @@ class AdminController extends Controller {
     ctx.validate(this.loginRule)
     const admin = await ctx.model.Admin.findOne(ctx.request.body)
     if (!admin) {
-      ctx.throw(404, '用户名或密码不正确!')
+      ctx.throw(401, '用户名或密码不正确!')
     }
     ctx.helper.success({
       token: await ctx.service.token.apply({
@@ -98,7 +98,7 @@ class AdminController extends Controller {
   async delete() {
     const { ctx } = this
     const status = ctx.state.user.data.status
-    let admin = await ctx.model.Admin.findById(ctx.params.id)
+    const admin = await ctx.model.Admin.findById(ctx.params.id)
     if (!admin) {
       ctx.throw(404, '管理员不存在!')
     }
