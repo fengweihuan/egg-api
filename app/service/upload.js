@@ -67,61 +67,60 @@ class UploadService extends Service {
     // 视频kind = video ['.mov', '.mp4', '.avi']
     // 音频kind = audio ['.mp3', '.wma', '.wav', '.ogg', '.ape', '.acc']
 
-    const attachmentKind = { 
-      image: [ '.jpg', '.jpeg', '.png', '.gif'],
+    const attachmentKind = {
+      image: [ '.jpg', '.jpeg', '.png', '.gif' ],
       document: [ '.doc', '.docx', '.ppt', '.pptx', '.xls', '.xlsx', '.csv', '.key', '.numbers', '.pages', '.pdf', '.txt', '.psd', '.zip', '.gz', '.tgz', '.gzip' ],
-      video: ['.mov', '.mp4', '.avi'],
-      audio: ['.mp3', '.wma', '.wav', '.ogg', '.ape', '.acc']
+      video: [ '.mov', '.mp4', '.avi' ],
+      audio: [ '.mp3', '.wma', '.wav', '.ogg', '.ape', '.acc' ]
     }
 
-    let { currentPage, pageSize, isPaging, search, kind } = payload
+    const { currentPage, pageSize, isPaging, search, kind } = payload
     let res = []
     let count = 0
-    let skip = ((Number(currentPage)) - 1) * Number(pageSize || 10)
-    if(isPaging) {
-      if(search) {
+    const skip = ((Number(currentPage)) - 1) * Number(pageSize || 10)
+    if (isPaging) {
+      if (search) {
         if (kind) {
-          res = await this.ctx.model.Attachment.find({filename: { $regex: search }, extname: { $in: attachmentKind[`${kind}`]} }).skip(skip).limit(Number(pageSize)).sort({ createdAt: -1 }).exec()
-        }else{
-          res = await this.ctx.model.Attachment.find({filename: { $regex: search } }).skip(skip).limit(Number(pageSize)).sort({ createdAt: -1 }).exec()
+          res = await this.ctx.model.Attachment.find({ filename: { $regex: search }, extname: { $in: attachmentKind[`${kind}`] } }).skip(skip).limit(Number(pageSize)).sort({ createdAt: -1 }).exec()
+        } else {
+          res = await this.ctx.model.Attachment.find({ filename: { $regex: search } }).skip(skip).limit(Number(pageSize)).sort({ createdAt: -1 }).exec()
         }
         count = res.length
       } else {
         if (kind) {
-          res = await this.ctx.model.Attachment.find({ extname: { $in: attachmentKind[`${kind}`]} }).skip(skip).limit(Number(pageSize)).sort({ createdAt: -1 }).exec()
-          count = await this.ctx.model.Attachment.count({ extname: { $in: attachmentKind[`${kind}`]} }).exec()
-        }else{
+          res = await this.ctx.model.Attachment.find({ extname: { $in: attachmentKind[`${kind}`] } }).skip(skip).limit(Number(pageSize)).sort({ createdAt: -1 }).exec()
+          count = await this.ctx.model.Attachment.count({ extname: { $in: attachmentKind[`${kind}`] } }).exec()
+        } else {
           res = await this.ctx.model.Attachment.find({}).skip(skip).limit(Number(pageSize)).sort({ createdAt: -1 }).exec()
           count = await this.ctx.model.Attachment.count({}).exec()
         }
       }
     } else {
-      if(search) {
+      if (search) {
         if (kind) {
-          res = await this.ctx.model.Attachment.find({filename: { $regex: search }, extname: { $in: attachmentKind[`${kind}`]} }).sort({ createdAt: -1 }).exec()
-        }else{
-          res = await this.ctx.model.Attachment.find({filename: { $regex: search }}).sort({ createdAt: -1 }).exec()
+          res = await this.ctx.model.Attachment.find({ filename: { $regex: search }, extname: { $in: attachmentKind[`${kind}`] } }).sort({ createdAt: -1 }).exec()
+        } else {
+          res = await this.ctx.model.Attachment.find({ filename: { $regex: search } }).sort({ createdAt: -1 }).exec()
         }
         count = res.length
       } else {
         if (kind) {
-          res = await this.ctx.model.Attachment.find({extname: { $in: attachmentKind[`${kind}`]} }).sort({ createdAt: -1 }).exec()
-          count = await this.ctx.model.Attachment.count({ extname: { $in: attachmentKind[`${kind}`]} }).exec()
-        }else{
+          res = await this.ctx.model.Attachment.find({ extname: { $in: attachmentKind[`${kind}`] } }).sort({ createdAt: -1 }).exec()
+          count = await this.ctx.model.Attachment.count({ extname: { $in: attachmentKind[`${kind}`] } }).exec()
+        } else {
           res = await this.ctx.model.Attachment.find({}).sort({ createdAt: -1 }).exec()
           count = await this.ctx.model.Attachment.count({}).exec()
         }
       }
     }
     // 整理数据源 -> Ant Design Pro
-    let data = res.map((e,i) => {
+    const data = res.map((e, i) => {
       const jsonObject = Object.assign({}, e._doc)
       jsonObject.key = i
-      jsonObject.createdAt = this.ctx.helper.formatTime(e.createdAt)
       return jsonObject
     })
 
-    return { count: count, list: data, pageSize: Number(pageSize), currentPage: Number(currentPage) }
+    return { count, list: data, pageSize: Number(pageSize), currentPage: Number(currentPage) }
   }
 
   // Commons======================================================================================================>
