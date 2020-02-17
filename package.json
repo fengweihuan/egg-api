@@ -33,7 +33,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
-    "start": "egg-scripts start --daemon --title=egg-server-node-type",
+    "start": "egg-scripts start --title=egg-server-node-type",
     "stop": "egg-scripts stop --title=egg-server-node-type",
     "dev": "egg-bin dev --inspect",
     "debug": "egg-bin debug",
