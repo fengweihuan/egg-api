@@ -1,0 +1,39 @@
+version: '2'
+networks:
+  egghost:
+    driver: bridge
+volumes:                # 创建自定义卷
+  node_modules:       # 卷名
+  mongo_data:
+services:
+  vuenginx:
+    build:
+      context: ../vue-admin
+      dockerfile: Dockerfile
+    networks:
+      - egghost
+    ports:
+      - '80:80'
+  mongo:
+    networks:
+      - egghost
+    image: mongo
+    ports:
+      - '27017:27017'
+    volumes:
+      # - /Users/apple/mongodb/data/db:/data/db
+      /usr/local/src/data/db:/data/db
+  egg-server:
+    networks:
+      - egghost
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - '7001:7001'
+    depends_on:
+      - mongo
+      - vuenginx
+    tty: true
+    links:
+      - mongo:mongo

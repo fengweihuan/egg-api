@@ -48,7 +48,7 @@ module.exports = appInfo => {
   }
 
   config.mongoose = {
-    url: 'mongodb://127.0.0.1:27017/node-elm',
+    url: 'mongodb://mongo:27017/node-elm',
     options: {
       autoReconnect: true,
       reconnectTries: Number.MAX_VALUE,

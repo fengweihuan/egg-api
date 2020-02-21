@@ -25,6 +25,6 @@ RUN npm i --production --registry=https://registry.npm.taobao.org
 COPY . /usr/src/eggApp
 
 # 暴露容器端口
-EXPOSE 9000
+EXPOSE 7001
 
 CMD npm start
