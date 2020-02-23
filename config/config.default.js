@@ -48,7 +48,7 @@ module.exports = appInfo => {
   }
 
   config.mongoose = {
-    url: 'mongodb://mongo:27017/node-elm',
+    url: 'mongodb://mongo:27017/node-elm', // 使用docker-compose时需要使用容器名称（mongo）
     options: {
       autoReconnect: true,
       reconnectTries: Number.MAX_VALUE,

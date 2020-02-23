@@ -14,6 +14,8 @@ services:
       - egghost
     ports:
       - '80:80'
+    depends_on:
+      - egg-server
   mongo:
     networks:
       - egghost
@@ -21,8 +23,8 @@ services:
     ports:
       - '27017:27017'
     volumes:
-      # - /Users/apple/mongodb/data/db:/data/db
-      /usr/local/src/data/db:/data/db
+      - /Users/apple/mongodb/data/db:/data/db   # mac本地开发环境
+      # - /usr/local/src/data/db:/data/db     # 生产环境
   egg-server:
     networks:
       - egghost
@@ -33,7 +35,6 @@ services:
       - '7001:7001'
     depends_on:
       - mongo
-      - vuenginx
     tty: true
     links:
       - mongo:mongo
